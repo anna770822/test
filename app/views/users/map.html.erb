@@ -3,24 +3,69 @@
 src="https://www.google.com/maps/embed/v1/search?q=台灣+Gogoro+電池交換站+&key=AIzaSyCJhYtzaZfX7Bxf5fDzgLEu8GE-rqAVycY" allowfullscreen></iframe>
 
 
-<h3>My Google Maps Demo</h3>
+測試路徑規劃</br>
+起始<input type="text" id="txtFrom" style="width:300px;"></input></br>
+目的<input type="text" id="txtEnd" style="width:300px;"></input></br>
+  <button id="btnSubmit" onclick="initialize2(txtFrom.value,txtEnd.value)">送出</button>
+<div id="map_canvas" style="width:70%;height:100%"></div>
+<div style="width:30%;height:100%;overflow:auto"> 
+  
+  <div id="directions_panel" style="width:100%"></div>
+</div>
 
 
-<div id="map"></div>
-  <h3>My Google Maps Demo</h3>
-    <div id="map"></div>
-    <script>
-      function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
+<script type="text/javascript">
+  var directionsDisplay;
+  var directionsService = new google.maps.DirectionsService();
+  var map;
+  var oldDirections = [];
+  var currentDirections = null;
+
+  function initialize2(pFrom,pEnd) {
+    var myOptions = {
+      zoom: 13,      
+    center: new google.maps.LatLng(24.98367,121.453586),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+    directionsDisplay = new google.maps.DirectionsRenderer({
+        'map': map,
+        'preserveViewport': true,
+        'draggable': true
+    }); 
+  
+    directionsDisplay.setPanel(document.getElementById("directions_panel"));
+
+    google.maps.event.addListener(directionsDisplay, 'directions_changed',
+      function() {
+        if (currentDirections) {
+          oldDirections.push(currentDirections);          
+        }
+        currentDirections = directionsDisplay.getDirections();
+      });
+    
+  
+    calcRoute2(pFrom,pEnd);
+  
+  }
+  
+  function calcRoute2(pFrom,pEnd) {
+    
+  var start = pFrom;
+  var end = pEnd;
+    var request = {
+        origin:start,   //起始地
+        destination:end,  //目的地
+        travelMode: google.maps.DirectionsTravelMode.DRIVING 
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
       }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJhYtzaZfX7Bxf5fDzgLEu8GE-rqAVyc&callback=initMap" async
-    defer></script>
+    });
+    
+  }
+  
+ 
+</script>

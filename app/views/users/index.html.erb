@@ -1,28 +1,57 @@
-<h1>user profile here</h1>
+<h1>Javascript Map with gogoro api</h1>
 
-<script>
-function initMap() {
+
+
+
+<div id="map"></div>
+  
+  /*google 地圖程式載入*/
+  <script type="text/javascript">
+    var url = 'https://wapi.gogoro.com/tw/api/vm/list';
+
+  function initMap() {
     //設定中心點座標
     
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
-      center: {lat: 22.630884, lng: 120.301065}
+      center: {lat: 25.105497, lng: 121.597366}
     });
-    var url = 'https://wapi.gogoro.com/tw/api/vm/list';
-    function callAjax(url) {
-       var xhr = new XMLHttpRequest();
-       xhr.open('get', url, true);
-       xhr.send(null);
-       xhr.onload = function() {
-        var gogorostation = JSON.parse(xhr.responseText);
-            gogorostaion = gogorostaion.data.records;//要撈的資料如下圖所示
-            len = wifiData.length;
-}//JSON.parse是string轉object,方便撈取資料
-       }
-}
-</script>
+    
+
+    callAjax(url);
+
+function callAjax(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('get', url, true);
+    xhr.send(null);
+
+    xhr.onload = function() {
+   
+            var record = JSON.parse(xhr.responseText);
+            record = record.data;
+            len = record.length;
 
 
+    //跑迴圈依序將值塞入到 marker
+    for(i=0;i<record.length;i++){
+      var str ={};
+      var place = {};
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJhYtzaZfX7Bxf5fDzgLEu8GE-rqAVycY&callback=initMap" async
+      place.lat = parseFloat(record[i]['Latitude']);
+      place.lng = parseFloat(record[i]['Longitude']);
+    
+      str.map = map;
+      str.title= record[i]['LocName']
+      str.position = place;
+      console.log(str);
+      new google.maps.Marker(str);
+    }
+
+
+    };
+};
+  
+  }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJhYtzaZfX7Bxf5fDzgLEu8GE-rqAVycY&callback=initMap" async
     defer></script>

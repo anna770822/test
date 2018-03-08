@@ -1,0 +1,26 @@
+<h1>Embeded map here</h1>
+<iframe width="600" height="450" frameborder="0" style="border:0"
+src="https://www.google.com/maps/embed/v1/search?q=台灣+Gogoro+電池交換站+&key=AIzaSyCJhYtzaZfX7Bxf5fDzgLEu8GE-rqAVycY" allowfullscreen></iframe>
+
+
+<h3>My Google Maps Demo</h3>
+
+
+<div id="map"></div>
+  <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJhYtzaZfX7Bxf5fDzgLEu8GE-rqAVyc&callback=initMap" async
+    defer></script>
